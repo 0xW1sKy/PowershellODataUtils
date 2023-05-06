@@ -7,19 +7,19 @@ dotnet build
 
 Pop-Location
 
-rmdir 'Microsoft.PowerShell.ODataUtils' -Recurse -Force -ErrorAction SilentlyCOntinue
+Remove-Item 'Microsoft.PowerShell.ODataUtils' -Recurse -Force -ErrorAction SilentlyCOntinue
 
 $moduleVersionLine = Select-String -Path 'src\ModuleGeneration\Microsoft.PowerShell.ODataUtils.psd1' -Pattern 'ModuleVersion' -SimpleMatch
 $moduleVersion = $moduleVersionLine.Line.Split("'")[1]
-$moduleDir = mkdir "Microsoft.PowerShell.ODataUtils\$moduleVersion"
-copy 'src\ModuleGeneration\*' $moduleDir -Recurse -Force
+$moduleDir = New-Item -ItemType Directory "Microsoft.PowerShell.ODataUtils\$moduleVersion"
+Copy-Item 'src\ModuleGeneration\*' $moduleDir -Recurse -Force
 
 $moduleDirCoreCLR = Join-Path $moduleDir 'CoreCLR'
 $moduleDirFullCLR = Join-Path $moduleDir 'FullCLR'
-mkdir $moduleDirCoreCLR | Out-Null
-mkdir $moduleDirFullCLR | Out-Null
+New-Item -ItemType Directory $moduleDirCoreCLR | Out-Null
+New-Item -ItemType Directory $moduleDirFullCLR | Out-Null
 
-copy 'src\PowerShell.Cmdletization.OData\bin\Debug\net451\PowerShell.Cmdletization.OData.dll' $moduleDirFullCLR
-copy 'src\PowerShell.Cmdletization.OData\bin\Debug\netstandard1.6\PowerShell.Cmdletization.OData.dll' $moduleDirCoreCLR
+Copy-Item 'src\PowerShell.Cmdletization.OData\bin\Debug\net472\PowerShell.Cmdletization.OData.dll' $moduleDirFullCLR
+Copy-Item 'src\PowerShell.Cmdletization.OData\bin\Debug\net7.0\PowerShell.Cmdletization.OData.dll' $moduleDirCoreCLR
 
 Pop-Location
