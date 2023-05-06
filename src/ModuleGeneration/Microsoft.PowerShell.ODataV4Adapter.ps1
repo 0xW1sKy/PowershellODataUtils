@@ -1134,7 +1134,7 @@ function GenerateClientSideProxyModule {
 
     if ($actions.Count -gt 0 -or $functions.Count -gt 0) {
         # Save Service Actions for all metadata schemas in single file
-        SaveServiceActionsCDXML $GlobalMetadata $ODataEndpointProxyParameters $(Join-Path OutputModule "ServiceActions.cdxml") $complexTypeMapping $progressBarStatus $CmdletAdapter
+        SaveServiceActionsCDXML $GlobalMetadata $ODataEndpointProxyParameters $(Join-Path $OutputModule "ServiceActions.cdxml") $complexTypeMapping $progressBarStatus $CmdletAdapter
     }
 
     $moduleDirInfo = [System.IO.DirectoryInfo]::new($OutputModule)
@@ -1183,7 +1183,7 @@ function SaveCDXML {
         $entitySetName = $EntitySet.Type.Name
     }
 
-    $Path = "$OutputModule\$entitySetName.cdxml"
+    $Path = $( Join-Path $OutputModule "$entitySetName.cdxml" )
 
     $xmlWriter = New-Object System.XMl.XmlTextWriter($Path, $Null)
 
